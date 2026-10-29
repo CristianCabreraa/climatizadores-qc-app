@@ -24,11 +24,16 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Preparar carpeta web para Capacitor
+      - name: Crear carpeta www y organizar archivos web
         run: |
           mkdir -p www
-          # Movemos los archivos web esenciales a la carpeta www (excluyendo carpetas del sistema como .git, android, .github)
-          find . -maxdepth 1 ! -name '.' ! -name '..' ! -name '.git' ! -name 'android' ! -name '.github' ! -name 'www' -exec mv {} www/ \;
+          # Copiamos todos los archivos HTML, CSS, JS y assets principales a la carpeta www
+          # (excluyendo carpetas internas como .git, android, .github y la misma www)
+          for item in *; do
+            if [ "$item" != "android" ] && [ "$item" != ".github" ] && [ "$item" != "www" ]; then
+              cp -r "$item" www/
+            fi
+          done
 
       - name: Instalar dependencias y sincronizar Capacitor
         run: |
