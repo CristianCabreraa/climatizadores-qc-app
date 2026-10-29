@@ -24,15 +24,13 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Crear carpeta www y organizar archivos web
+      - name: Crear carpeta www y organizar archivos automáticamente
         run: |
           mkdir -p www
-          # Copiamos todos los archivos HTML, CSS, JS y assets principales a la carpeta www
-          # (excluyendo carpetas internas como .git, android, .github y la misma www)
-          for item in *; do
-            if [ "$item" != "android" ] && [ "$item" != ".github" ] && [ "$item" != "www" ]; then
-              cp -r "$item" www/
-            fi
+          # Mueve todos tus archivos web a la carpeta www automáticamente
+          shopt -s extglob
+          for f in !(android|.github|www); do
+            cp -r "$f" www/
           done
 
       - name: Instalar dependencias y sincronizar Capacitor
