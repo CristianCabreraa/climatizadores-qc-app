@@ -13,22 +13,30 @@ jobs:
       - name: Descargar código fuente
         uses: actions/checkout@v4
 
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
       - name: Configurar Java JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: 17
 
-      - name: Configurar Gradle
-        uses: gradle/actions/setup-gradle@v3
-
-      - name: Compilar APK con el script personalizado
+      - name: Instalar dependencias y sincronizar Capacitor
         run: |
-          chmod +x build-apk
-          ./build-apk
+          npm install
+          npx cap sync android
+
+      - name: Compilar APK con Gradle
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug --stacktrace
 
       - name: Subir APK v1 generado como artefacto descargable
         uses: actions/upload-artifact@v4
         with:
           name: GreenAir-QC-v1.apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
