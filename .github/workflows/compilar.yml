@@ -27,7 +27,6 @@ jobs:
       - name: Crear carpeta www y organizar archivos automáticamente
         run: |
           mkdir -p www
-          # Mueve todos tus archivos web a la carpeta www automáticamente
           shopt -s extglob
           for f in !(android|.github|www); do
             cp -r "$f" www/
@@ -36,6 +35,7 @@ jobs:
       - name: Instalar dependencias y sincronizar Capacitor
         run: |
           npm install
+          npx cap add android --force || true
           npx cap sync android
 
       - name: Compilar APK con Gradle
