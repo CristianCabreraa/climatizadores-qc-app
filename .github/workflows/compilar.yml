@@ -24,6 +24,12 @@ jobs:
           distribution: 'temurin'
           java-version: 17
 
+      - name: Preparar carpeta web para Capacitor
+        run: |
+          mkdir -p www
+          # Movemos los archivos web esenciales a la carpeta www (excluyendo carpetas del sistema como .git, android, .github)
+          find . -maxdepth 1 ! -name '.' ! -name '..' ! -name '.git' ! -name 'android' ! -name '.github' ! -name 'www' -exec mv {} www/ \;
+
       - name: Instalar dependencias y sincronizar Capacitor
         run: |
           npm install
