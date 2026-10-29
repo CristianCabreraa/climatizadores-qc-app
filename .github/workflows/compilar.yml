@@ -32,10 +32,11 @@ jobs:
             cp -r "$f" www/
           done
 
-      - name: Instalar dependencias y sincronizar Capacitor
+      - name: Instalar dependencias y recrear plataforma Android
         run: |
           npm install
-          npx cap add android --force || true
+          rm -rf android
+          npx cap add android
           npx cap sync android
 
       - name: Compilar APK con Gradle
