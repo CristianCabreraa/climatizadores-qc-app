@@ -39,9 +39,11 @@ jobs:
           npx cap add android
           npx cap sync android
 
-      - name: Compilar APK con Gradle
+      - name: Verificar archivos y compilar con Gradle
         run: |
+          ls -la
           cd android
+          ls -la
           chmod +x gradlew
           ./gradlew assembleDebug --stacktrace
 
